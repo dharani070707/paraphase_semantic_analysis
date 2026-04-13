@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ type ResultData = {
 
 export default function Result() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { text1, text2 } = location.state || {};
 
   const [data, setData] = useState<ResultData | null>(null);
@@ -108,6 +109,14 @@ export default function Result() {
                   : "No, the sentences are different"}
               </h2>
             </div>
+
+            {/* Button */}
+            <button
+              onClick={() => navigate("/")}
+              className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors"
+            >
+              Home
+            </button>
           </motion.div>
         )}
       </div>
