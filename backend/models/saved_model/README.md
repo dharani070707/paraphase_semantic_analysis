@@ -5,42 +5,41 @@ tags:
 - feature-extraction
 - dense
 - generated_from_trainer
-- dataset_size:200
+- dataset_size:363846
 - loss:CosineSimilarityLoss
 base_model: sentence-transformers/all-MiniLM-L6-v2
 widget:
-- source_sentence: What are micronutrients and macronutrients? How do you distinguish
-    the difference between micronutrients and macronutrients?
+- source_sentence: What are some tips on making it through the job interview process
+    at Investors Bank?
   sentences:
-  - How do you distinguish the difference between micronutrients and macronutrients?
-  - What does the daily schedule of those successful people look like?
-  - Would a second airport in Sydney, Australia be needed if a high-speed rail link
-    was created between Melbourne and Sydney?
-- source_sentence: How do I get police job with criminal record?
+  - Which is the best movie of year 2016?
+  - What are some tips on making it through the job interview process at Commerce
+    Bank?
+  - Which Bollywood movie do you hate? Why?
+- source_sentence: How can changing 500 and 1000 rupee notes end the black money in
+    India?
   sentences:
-  - What is the best way to meet new people?
-  - How do you get a job with a criminal record?
-  - Would it be just as difficult, or maybe even more difficult, to make an irrational
-    AI robot as it would be to make a rational one?
-- source_sentence: Apart from Listverse and Toptenz which are the other popular list
-    website?
+  - What is the most valuable thing you have?
+  - How banning 500 and 1000 rupees note will curb the corruption and black money
+    in India?
+  - What is the code for loading a program from storage to memory?
+- source_sentence: Which hospital is good for orthopaedic in Chennai?
   sentences:
-  - How do I get into IB india?
-  - What would be the easiest popular website to code from scratch?
-  - What should I do when I don't know what exactly is the purpose of my existence?
-- source_sentence: Would you go out with a friend?
+  - Is Denmark a socialist country?
+  - What type or genre of music is this and how can I find more music similar to this
+    one?
+  - Which is a good orthopaedic hospital in bangalore?
+- source_sentence: What are some startup opportunities now that Donald Trump is president?
   sentences:
-  - Is it not normal to go out with friends?
-  - What are the best websites for entrepreneur?
-  - What are the ways of losing weight?
-- source_sentence: Can I enter University of Melbourne if I couldn't achieve the guaranteed
-    marks in Trinity College Foundation?
+  - Is there any hidden easter egg in videogames waiting to be discovered?
+  - Why does our stomach hurt when we laugh too hard?
+  - What is it like to run away from home? Any amazing experiences?
+- source_sentence: How do I stop being absent minded in lectures?
   sentences:
-  - 'University of the Philippines: If I take a second BFA in the UP College of Fine
-    Arts, can I be exempted from gen. ed. or core subjects?'
-  - What is your thoughts on the theory that all of us living, is just the Earth being
-    aware of itself?
-  - What is the perception of Mikhail Gorbachev among Russians today?
+  - I am absent minded in classes, & similarly read slowly too. I am an undergraduate
+    student, & have been like this since school. How may I improve?
+  - What is the best exercise for belly fat?
+  - '"Why is my external hard drive not showing up in ""My Computer""?"'
 pipeline_tag: sentence-similarity
 library_name: sentence-transformers
 ---
@@ -95,9 +94,9 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("sentence_transformers_model_id")
 # Run inference
 sentences = [
-    "Can I enter University of Melbourne if I couldn't achieve the guaranteed marks in Trinity College Foundation?",
-    'University of the Philippines: If I take a second BFA in the UP College of Fine Arts, can I be exempted from gen. ed. or core subjects?',
-    'What is the perception of Mikhail Gorbachev among Russians today?',
+    'How do I stop being absent minded in lectures?',
+    'I am absent minded in classes, & similarly read slowly too. I am an undergraduate student, & have been like this since school. How may I improve?',
+    'What is the best exercise for belly fat?',
 ]
 embeddings = model.encode(sentences)
 print(embeddings.shape)
@@ -106,9 +105,9 @@ print(embeddings.shape)
 # Get the similarity scores for the embeddings
 similarities = model.similarity(embeddings, embeddings)
 print(similarities)
-# tensor([[ 1.0000,  0.3475, -0.1033],
-#         [ 0.3475,  1.0000, -0.0937],
-#         [-0.1033, -0.0937,  1.0000]])
+# tensor([[ 1.0000, -0.0267,  0.0076],
+#         [-0.0267,  1.0000,  0.0994],
+#         [ 0.0076,  0.0994,  1.0000]])
 ```
 
 <!--
@@ -153,19 +152,19 @@ You can finetune this model on your own dataset.
 
 #### Unnamed Dataset
 
-* Size: 200 training samples
+* Size: 363,846 training samples
 * Columns: <code>sentence_0</code>, <code>sentence_1</code>, and <code>label</code>
-* Approximate statistics based on the first 200 samples:
-  |         | sentence_0                                                                        | sentence_1                                                                        | label                                                          |
-  |:--------|:----------------------------------------------------------------------------------|:----------------------------------------------------------------------------------|:---------------------------------------------------------------|
-  | type    | string                                                                            | string                                                                            | float                                                          |
-  | details | <ul><li>min: 6 tokens</li><li>mean: 15.28 tokens</li><li>max: 42 tokens</li></ul> | <ul><li>min: 7 tokens</li><li>mean: 15.76 tokens</li><li>max: 82 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.38</li><li>max: 1.0</li></ul> |
+* Approximate statistics based on the first 1000 samples:
+  |         | sentence_0                                                                        | sentence_1                                                                         | label                                                          |
+  |:--------|:----------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------|:---------------------------------------------------------------|
+  | type    | string                                                                            | string                                                                             | float                                                          |
+  | details | <ul><li>min: 6 tokens</li><li>mean: 15.87 tokens</li><li>max: 97 tokens</li></ul> | <ul><li>min: 6 tokens</li><li>mean: 16.03 tokens</li><li>max: 101 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.35</li><li>max: 1.0</li></ul> |
 * Samples:
-  | sentence_0                                                | sentence_1                                                     | label            |
-  |:----------------------------------------------------------|:---------------------------------------------------------------|:-----------------|
-  | <code>What is the best free VPN?</code>                   | <code>What are the best Free VPN for Indonesia?</code>         | <code>0.0</code> |
-  | <code>What causes stool color to change to yellow?</code> | <code>What can cause stool to come out as little balls?</code> | <code>0.0</code> |
-  | <code>What are some neurogaming startups?</code>          | <code>What are startups?</code>                                | <code>0.0</code> |
+  | sentence_0                                                                             | sentence_1                                             | label            |
+  |:---------------------------------------------------------------------------------------|:-------------------------------------------------------|:-----------------|
+  | <code>Telugu Film Industry: What you hate the most about mega star chiranjeevi?</code> | <code>Who is A1 star in telugu?</code>                 | <code>0.0</code> |
+  | <code>Why is the theme of the time travel so fascinating?</code>                       | <code>Why is time travel so fascinating to you?</code> | <code>1.0</code> |
+  | <code>How is it to be raised by gay parents?</code>                                    | <code>What's it like to have gay parents?</code>       | <code>1.0</code> |
 * Loss: [<code>CosineSimilarityLoss</code>](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#cosinesimilarityloss) with these parameters:
   ```json
   {
@@ -177,105 +176,127 @@ You can finetune this model on your own dataset.
 #### Non-Default Hyperparameters
 
 - `per_device_train_batch_size`: 16
-- `num_train_epochs`: 1
 - `per_device_eval_batch_size`: 16
+- `num_train_epochs`: 20
 - `multi_dataset_batch_sampler`: round_robin
 
 #### All Hyperparameters
 <details><summary>Click to expand</summary>
 
+- `overwrite_output_dir`: False
+- `do_predict`: False
+- `eval_strategy`: no
+- `prediction_loss_only`: True
 - `per_device_train_batch_size`: 16
-- `num_train_epochs`: 1
-- `max_steps`: -1
+- `per_device_eval_batch_size`: 16
+- `per_gpu_train_batch_size`: None
+- `per_gpu_eval_batch_size`: None
+- `gradient_accumulation_steps`: 1
+- `eval_accumulation_steps`: None
+- `torch_empty_cache_steps`: None
 - `learning_rate`: 5e-05
-- `lr_scheduler_type`: linear
-- `lr_scheduler_kwargs`: None
-- `warmup_steps`: 0
-- `optim`: adamw_torch_fused
-- `optim_args`: None
 - `weight_decay`: 0.0
 - `adam_beta1`: 0.9
 - `adam_beta2`: 0.999
 - `adam_epsilon`: 1e-08
-- `optim_target_modules`: None
-- `gradient_accumulation_steps`: 1
-- `average_tokens_across_devices`: True
 - `max_grad_norm`: 1
-- `label_smoothing_factor`: 0.0
+- `num_train_epochs`: 20
+- `max_steps`: -1
+- `lr_scheduler_type`: linear
+- `lr_scheduler_kwargs`: None
+- `warmup_ratio`: 0.0
+- `warmup_steps`: 0
+- `log_level`: passive
+- `log_level_replica`: warning
+- `log_on_each_node`: True
+- `logging_nan_inf_filter`: True
+- `save_safetensors`: True
+- `save_on_each_node`: False
+- `save_only_model`: False
+- `restore_callback_states_from_checkpoint`: False
+- `no_cuda`: False
+- `use_cpu`: False
+- `use_mps_device`: False
+- `seed`: 42
+- `data_seed`: None
+- `jit_mode_eval`: False
 - `bf16`: False
 - `fp16`: False
+- `fp16_opt_level`: O1
+- `half_precision_backend`: auto
 - `bf16_full_eval`: False
 - `fp16_full_eval`: False
 - `tf32`: None
-- `gradient_checkpointing`: False
-- `gradient_checkpointing_kwargs`: None
-- `torch_compile`: False
-- `torch_compile_backend`: None
-- `torch_compile_mode`: None
-- `use_liger_kernel`: False
-- `liger_kernel_config`: None
-- `use_cache`: False
-- `neftune_noise_alpha`: None
-- `torch_empty_cache_steps`: None
-- `auto_find_batch_size`: False
-- `log_on_each_node`: True
-- `logging_nan_inf_filter`: True
-- `include_num_input_tokens_seen`: no
-- `log_level`: passive
-- `log_level_replica`: warning
-- `disable_tqdm`: False
-- `project`: huggingface
-- `trackio_space_id`: trackio
-- `eval_strategy`: no
-- `per_device_eval_batch_size`: 16
-- `prediction_loss_only`: True
-- `eval_on_start`: False
-- `eval_do_concat_batches`: True
-- `eval_use_gather_object`: False
-- `eval_accumulation_steps`: None
-- `include_for_metrics`: []
-- `batch_eval_metrics`: False
-- `save_only_model`: False
-- `save_on_each_node`: False
-- `enable_jit_checkpoint`: False
-- `push_to_hub`: False
-- `hub_private_repo`: None
-- `hub_model_id`: None
-- `hub_strategy`: every_save
-- `hub_always_push`: False
-- `hub_revision`: None
-- `load_best_model_at_end`: False
-- `ignore_data_skip`: False
-- `restore_callback_states_from_checkpoint`: False
-- `full_determinism`: False
-- `seed`: 42
-- `data_seed`: None
-- `use_cpu`: False
-- `accelerator_config`: {'split_batches': False, 'dispatch_batches': None, 'even_batches': True, 'use_seedable_sampler': True, 'non_blocking': False, 'gradient_accumulation_kwargs': None}
-- `parallelism_config`: None
+- `local_rank`: 0
+- `ddp_backend`: None
+- `tpu_num_cores`: None
+- `tpu_metrics_debug`: False
+- `debug`: []
 - `dataloader_drop_last`: False
 - `dataloader_num_workers`: 0
-- `dataloader_pin_memory`: True
-- `dataloader_persistent_workers`: False
 - `dataloader_prefetch_factor`: None
+- `past_index`: -1
+- `disable_tqdm`: False
 - `remove_unused_columns`: True
 - `label_names`: None
-- `train_sampling_strategy`: random
+- `load_best_model_at_end`: False
+- `ignore_data_skip`: False
+- `fsdp`: []
+- `fsdp_min_num_params`: 0
+- `fsdp_config`: {'min_num_params': 0, 'xla': False, 'xla_fsdp_v2': False, 'xla_fsdp_grad_ckpt': False}
+- `fsdp_transformer_layer_cls_to_wrap`: None
+- `accelerator_config`: {'split_batches': False, 'dispatch_batches': None, 'even_batches': True, 'use_seedable_sampler': True, 'non_blocking': False, 'gradient_accumulation_kwargs': None}
+- `parallelism_config`: None
+- `deepspeed`: None
+- `label_smoothing_factor`: 0.0
+- `optim`: adamw_torch_fused
+- `optim_args`: None
+- `adafactor`: False
+- `group_by_length`: False
 - `length_column_name`: length
+- `project`: huggingface
+- `trackio_space_id`: trackio
 - `ddp_find_unused_parameters`: None
 - `ddp_bucket_cap_mb`: None
 - `ddp_broadcast_buffers`: False
-- `ddp_backend`: None
-- `ddp_timeout`: 1800
-- `fsdp`: []
-- `fsdp_config`: {'min_num_params': 0, 'xla': False, 'xla_fsdp_v2': False, 'xla_fsdp_grad_ckpt': False}
-- `deepspeed`: None
-- `debug`: []
+- `dataloader_pin_memory`: True
+- `dataloader_persistent_workers`: False
 - `skip_memory_metrics`: True
-- `do_predict`: False
+- `use_legacy_prediction_loop`: False
+- `push_to_hub`: False
 - `resume_from_checkpoint`: None
-- `warmup_ratio`: None
-- `local_rank`: -1
+- `hub_model_id`: None
+- `hub_strategy`: every_save
+- `hub_private_repo`: None
+- `hub_always_push`: False
+- `hub_revision`: None
+- `gradient_checkpointing`: False
+- `gradient_checkpointing_kwargs`: None
+- `include_inputs_for_metrics`: False
+- `include_for_metrics`: []
+- `eval_do_concat_batches`: True
+- `fp16_backend`: auto
+- `push_to_hub_model_id`: None
+- `push_to_hub_organization`: None
+- `mp_parameters`: 
+- `auto_find_batch_size`: False
+- `full_determinism`: False
+- `torchdynamo`: None
+- `ray_scope`: last
+- `ddp_timeout`: 1800
+- `torch_compile`: False
+- `torch_compile_backend`: None
+- `torch_compile_mode`: None
+- `include_tokens_per_second`: False
+- `include_num_input_tokens_seen`: no
+- `neftune_noise_alpha`: None
+- `optim_target_modules`: None
+- `batch_eval_metrics`: False
+- `eval_on_start`: False
+- `use_liger_kernel`: False
+- `liger_kernel_config`: None
+- `eval_use_gather_object`: False
+- `average_tokens_across_devices`: True
 - `prompts`: None
 - `batch_sampler`: batch_sampler
 - `multi_dataset_batch_sampler`: round_robin
@@ -284,13 +305,930 @@ You can finetune this model on your own dataset.
 
 </details>
 
+### Training Logs
+<details><summary>Click to expand</summary>
+
+| Epoch   | Step   | Training Loss |
+|:-------:|:------:|:-------------:|
+| 0.0220  | 500    | 0.2096        |
+| 0.0440  | 1000   | 0.1588        |
+| 0.0660  | 1500   | 0.1479        |
+| 0.0879  | 2000   | 0.1381        |
+| 0.1099  | 2500   | 0.1355        |
+| 0.1319  | 3000   | 0.1333        |
+| 0.1539  | 3500   | 0.1309        |
+| 0.1759  | 4000   | 0.1287        |
+| 0.1979  | 4500   | 0.1244        |
+| 0.2199  | 5000   | 0.1227        |
+| 0.2419  | 5500   | 0.1202        |
+| 0.2638  | 6000   | 0.1251        |
+| 0.2858  | 6500   | 0.1251        |
+| 0.3078  | 7000   | 0.1227        |
+| 0.3298  | 7500   | 0.1203        |
+| 0.3518  | 8000   | 0.1176        |
+| 0.3738  | 8500   | 0.118         |
+| 0.3958  | 9000   | 0.1184        |
+| 0.4177  | 9500   | 0.1149        |
+| 0.4397  | 10000  | 0.1175        |
+| 0.4617  | 10500  | 0.1175        |
+| 0.4837  | 11000  | 0.1185        |
+| 0.5057  | 11500  | 0.1168        |
+| 0.5277  | 12000  | 0.1119        |
+| 0.5497  | 12500  | 0.1169        |
+| 0.5717  | 13000  | 0.1135        |
+| 0.5936  | 13500  | 0.1161        |
+| 0.6156  | 14000  | 0.1125        |
+| 0.6376  | 14500  | 0.1118        |
+| 0.6596  | 15000  | 0.1122        |
+| 0.6816  | 15500  | 0.11          |
+| 0.7036  | 16000  | 0.1135        |
+| 0.7256  | 16500  | 0.1132        |
+| 0.7475  | 17000  | 0.1072        |
+| 0.7695  | 17500  | 0.1095        |
+| 0.7915  | 18000  | 0.1079        |
+| 0.8135  | 18500  | 0.1095        |
+| 0.8355  | 19000  | 0.1089        |
+| 0.8575  | 19500  | 0.1104        |
+| 0.8795  | 20000  | 0.1071        |
+| 0.9015  | 20500  | 0.1063        |
+| 0.9234  | 21000  | 0.1082        |
+| 0.9454  | 21500  | 0.1071        |
+| 0.9674  | 22000  | 0.1067        |
+| 0.9894  | 22500  | 0.1079        |
+| 1.0114  | 23000  | 0.1044        |
+| 1.0334  | 23500  | 0.0967        |
+| 1.0554  | 24000  | 0.0969        |
+| 1.0773  | 24500  | 0.097         |
+| 1.0993  | 25000  | 0.0964        |
+| 1.1213  | 25500  | 0.0975        |
+| 1.1433  | 26000  | 0.0994        |
+| 1.1653  | 26500  | 0.0966        |
+| 1.1873  | 27000  | 0.0927        |
+| 1.2093  | 27500  | 0.0968        |
+| 1.2313  | 28000  | 0.097         |
+| 1.2532  | 28500  | 0.0951        |
+| 1.2752  | 29000  | 0.0968        |
+| 1.2972  | 29500  | 0.0945        |
+| 1.3192  | 30000  | 0.094         |
+| 1.3412  | 30500  | 0.0948        |
+| 1.3632  | 31000  | 0.0942        |
+| 1.3852  | 31500  | 0.0949        |
+| 1.4072  | 32000  | 0.0948        |
+| 1.4291  | 32500  | 0.094         |
+| 1.4511  | 33000  | 0.0964        |
+| 1.4731  | 33500  | 0.0985        |
+| 1.4951  | 34000  | 0.097         |
+| 1.5171  | 34500  | 0.0921        |
+| 1.5391  | 35000  | 0.0987        |
+| 1.5611  | 35500  | 0.0949        |
+| 1.5830  | 36000  | 0.0972        |
+| 1.6050  | 36500  | 0.096         |
+| 1.6270  | 37000  | 0.0919        |
+| 1.6490  | 37500  | 0.0972        |
+| 1.6710  | 38000  | 0.0941        |
+| 1.6930  | 38500  | 0.0949        |
+| 1.7150  | 39000  | 0.092         |
+| 1.7370  | 39500  | 0.0932        |
+| 1.7589  | 40000  | 0.0937        |
+| 1.7809  | 40500  | 0.0939        |
+| 1.8029  | 41000  | 0.0928        |
+| 1.8249  | 41500  | 0.0911        |
+| 1.8469  | 42000  | 0.093         |
+| 1.8689  | 42500  | 0.0931        |
+| 1.8909  | 43000  | 0.0924        |
+| 1.9128  | 43500  | 0.0923        |
+| 1.9348  | 44000  | 0.0935        |
+| 1.9568  | 44500  | 0.0934        |
+| 1.9788  | 45000  | 0.0942        |
+| 2.0008  | 45500  | 0.093         |
+| 2.0228  | 46000  | 0.0842        |
+| 2.0448  | 46500  | 0.0805        |
+| 2.0668  | 47000  | 0.0806        |
+| 2.0887  | 47500  | 0.0821        |
+| 2.1107  | 48000  | 0.0832        |
+| 2.1327  | 48500  | 0.0826        |
+| 2.1547  | 49000  | 0.0818        |
+| 2.1767  | 49500  | 0.0845        |
+| 2.1987  | 50000  | 0.0809        |
+| 2.2207  | 50500  | 0.0823        |
+| 2.2426  | 51000  | 0.0837        |
+| 2.2646  | 51500  | 0.0828        |
+| 2.2866  | 52000  | 0.0835        |
+| 2.3086  | 52500  | 0.0838        |
+| 2.3306  | 53000  | 0.0817        |
+| 2.3526  | 53500  | 0.0803        |
+| 2.3746  | 54000  | 0.0814        |
+| 2.3966  | 54500  | 0.0825        |
+| 2.4185  | 55000  | 0.0821        |
+| 2.4405  | 55500  | 0.0833        |
+| 2.4625  | 56000  | 0.0853        |
+| 2.4845  | 56500  | 0.0811        |
+| 2.5065  | 57000  | 0.0826        |
+| 2.5285  | 57500  | 0.0834        |
+| 2.5505  | 58000  | 0.0806        |
+| 2.5724  | 58500  | 0.0795        |
+| 2.5944  | 59000  | 0.0837        |
+| 2.6164  | 59500  | 0.0802        |
+| 2.6384  | 60000  | 0.0852        |
+| 2.6604  | 60500  | 0.0835        |
+| 2.6824  | 61000  | 0.0821        |
+| 2.7044  | 61500  | 0.0817        |
+| 2.7264  | 62000  | 0.0844        |
+| 2.7483  | 62500  | 0.0831        |
+| 2.7703  | 63000  | 0.0815        |
+| 2.7923  | 63500  | 0.0842        |
+| 2.8143  | 64000  | 0.0832        |
+| 2.8363  | 64500  | 0.0834        |
+| 2.8583  | 65000  | 0.0817        |
+| 2.8803  | 65500  | 0.0817        |
+| 2.9022  | 66000  | 0.0823        |
+| 2.9242  | 66500  | 0.0831        |
+| 2.9462  | 67000  | 0.0807        |
+| 2.9682  | 67500  | 0.0816        |
+| 2.9902  | 68000  | 0.0836        |
+| 3.0122  | 68500  | 0.0773        |
+| 3.0342  | 69000  | 0.0718        |
+| 3.0562  | 69500  | 0.0715        |
+| 3.0781  | 70000  | 0.0698        |
+| 3.1001  | 70500  | 0.0741        |
+| 3.1221  | 71000  | 0.0723        |
+| 3.1441  | 71500  | 0.0734        |
+| 3.1661  | 72000  | 0.0727        |
+| 3.1881  | 72500  | 0.0733        |
+| 3.2101  | 73000  | 0.0732        |
+| 3.2320  | 73500  | 0.073         |
+| 3.2540  | 74000  | 0.0714        |
+| 3.2760  | 74500  | 0.0733        |
+| 3.2980  | 75000  | 0.0717        |
+| 3.3200  | 75500  | 0.0757        |
+| 3.3420  | 76000  | 0.0726        |
+| 3.3640  | 76500  | 0.075         |
+| 3.3860  | 77000  | 0.0766        |
+| 3.4079  | 77500  | 0.0712        |
+| 3.4299  | 78000  | 0.0737        |
+| 3.4519  | 78500  | 0.0739        |
+| 3.4739  | 79000  | 0.0698        |
+| 3.4959  | 79500  | 0.0715        |
+| 3.5179  | 80000  | 0.0713        |
+| 3.5399  | 80500  | 0.0723        |
+| 3.5618  | 81000  | 0.073         |
+| 3.5838  | 81500  | 0.0729        |
+| 3.6058  | 82000  | 0.0746        |
+| 3.6278  | 82500  | 0.0727        |
+| 3.6498  | 83000  | 0.0724        |
+| 3.6718  | 83500  | 0.0747        |
+| 3.6938  | 84000  | 0.0744        |
+| 3.7158  | 84500  | 0.0756        |
+| 3.7377  | 85000  | 0.0749        |
+| 3.7597  | 85500  | 0.0709        |
+| 3.7817  | 86000  | 0.0756        |
+| 3.8037  | 86500  | 0.0746        |
+| 3.8257  | 87000  | 0.0742        |
+| 3.8477  | 87500  | 0.0727        |
+| 3.8697  | 88000  | 0.0736        |
+| 3.8916  | 88500  | 0.0742        |
+| 3.9136  | 89000  | 0.0697        |
+| 3.9356  | 89500  | 0.0711        |
+| 3.9576  | 90000  | 0.074         |
+| 3.9796  | 90500  | 0.0727        |
+| 4.0016  | 91000  | 0.0719        |
+| 4.0236  | 91500  | 0.0637        |
+| 4.0456  | 92000  | 0.065         |
+| 4.0675  | 92500  | 0.0635        |
+| 4.0895  | 93000  | 0.0665        |
+| 4.1115  | 93500  | 0.0654        |
+| 4.1335  | 94000  | 0.0629        |
+| 4.1555  | 94500  | 0.0651        |
+| 4.1775  | 95000  | 0.0639        |
+| 4.1995  | 95500  | 0.0637        |
+| 4.2215  | 96000  | 0.0647        |
+| 4.2434  | 96500  | 0.0653        |
+| 4.2654  | 97000  | 0.0644        |
+| 4.2874  | 97500  | 0.0648        |
+| 4.3094  | 98000  | 0.0627        |
+| 4.3314  | 98500  | 0.0663        |
+| 4.3534  | 99000  | 0.0623        |
+| 4.3754  | 99500  | 0.0659        |
+| 4.3973  | 100000 | 0.0638        |
+| 4.4193  | 100500 | 0.0668        |
+| 4.4413  | 101000 | 0.0647        |
+| 4.4633  | 101500 | 0.0664        |
+| 4.4853  | 102000 | 0.0675        |
+| 4.5073  | 102500 | 0.0677        |
+| 4.5293  | 103000 | 0.0646        |
+| 4.5513  | 103500 | 0.0666        |
+| 4.5732  | 104000 | 0.0633        |
+| 4.5952  | 104500 | 0.0666        |
+| 4.6172  | 105000 | 0.066         |
+| 4.6392  | 105500 | 0.0673        |
+| 4.6612  | 106000 | 0.068         |
+| 4.6832  | 106500 | 0.0671        |
+| 4.7052  | 107000 | 0.0643        |
+| 4.7271  | 107500 | 0.0649        |
+| 4.7491  | 108000 | 0.0634        |
+| 4.7711  | 108500 | 0.0674        |
+| 4.7931  | 109000 | 0.0684        |
+| 4.8151  | 109500 | 0.0697        |
+| 4.8371  | 110000 | 0.0656        |
+| 4.8591  | 110500 | 0.0651        |
+| 4.8811  | 111000 | 0.0665        |
+| 4.9030  | 111500 | 0.0688        |
+| 4.9250  | 112000 | 0.0685        |
+| 4.9470  | 112500 | 0.0663        |
+| 4.9690  | 113000 | 0.0663        |
+| 4.9910  | 113500 | 0.0677        |
+| 5.0130  | 114000 | 0.0599        |
+| 5.0350  | 114500 | 0.0612        |
+| 5.0569  | 115000 | 0.0564        |
+| 5.0789  | 115500 | 0.0562        |
+| 5.1009  | 116000 | 0.057         |
+| 5.1229  | 116500 | 0.0576        |
+| 5.1449  | 117000 | 0.059         |
+| 5.1669  | 117500 | 0.0586        |
+| 5.1889  | 118000 | 0.0563        |
+| 5.2109  | 118500 | 0.0576        |
+| 5.2328  | 119000 | 0.0562        |
+| 5.2548  | 119500 | 0.0586        |
+| 5.2768  | 120000 | 0.0593        |
+| 5.2988  | 120500 | 0.0579        |
+| 5.3208  | 121000 | 0.06          |
+| 5.3428  | 121500 | 0.0583        |
+| 5.3648  | 122000 | 0.0597        |
+| 5.3867  | 122500 | 0.0579        |
+| 5.4087  | 123000 | 0.058         |
+| 5.4307  | 123500 | 0.0604        |
+| 5.4527  | 124000 | 0.0592        |
+| 5.4747  | 124500 | 0.0594        |
+| 5.4967  | 125000 | 0.061         |
+| 5.5187  | 125500 | 0.0573        |
+| 5.5407  | 126000 | 0.0601        |
+| 5.5626  | 126500 | 0.0591        |
+| 5.5846  | 127000 | 0.0571        |
+| 5.6066  | 127500 | 0.0605        |
+| 5.6286  | 128000 | 0.0592        |
+| 5.6506  | 128500 | 0.0604        |
+| 5.6726  | 129000 | 0.0597        |
+| 5.6946  | 129500 | 0.0615        |
+| 5.7165  | 130000 | 0.0602        |
+| 5.7385  | 130500 | 0.0575        |
+| 5.7605  | 131000 | 0.062         |
+| 5.7825  | 131500 | 0.0625        |
+| 5.8045  | 132000 | 0.0593        |
+| 5.8265  | 132500 | 0.0594        |
+| 5.8485  | 133000 | 0.0605        |
+| 5.8705  | 133500 | 0.0578        |
+| 5.8924  | 134000 | 0.0604        |
+| 5.9144  | 134500 | 0.0593        |
+| 5.9364  | 135000 | 0.0613        |
+| 5.9584  | 135500 | 0.0588        |
+| 5.9804  | 136000 | 0.0593        |
+| 6.0024  | 136500 | 0.0566        |
+| 6.0244  | 137000 | 0.0502        |
+| 6.0463  | 137500 | 0.0541        |
+| 6.0683  | 138000 | 0.0544        |
+| 6.0903  | 138500 | 0.0542        |
+| 6.1123  | 139000 | 0.0519        |
+| 6.1343  | 139500 | 0.0533        |
+| 6.1563  | 140000 | 0.0528        |
+| 6.1783  | 140500 | 0.0521        |
+| 6.2003  | 141000 | 0.0524        |
+| 6.2222  | 141500 | 0.0541        |
+| 6.2442  | 142000 | 0.0547        |
+| 6.2662  | 142500 | 0.0534        |
+| 6.2882  | 143000 | 0.0538        |
+| 6.3102  | 143500 | 0.0544        |
+| 6.3322  | 144000 | 0.0536        |
+| 6.3542  | 144500 | 0.053         |
+| 6.3761  | 145000 | 0.0512        |
+| 6.3981  | 145500 | 0.0513        |
+| 6.4201  | 146000 | 0.0544        |
+| 6.4421  | 146500 | 0.0526        |
+| 6.4641  | 147000 | 0.0528        |
+| 6.4861  | 147500 | 0.0551        |
+| 6.5081  | 148000 | 0.0533        |
+| 6.5301  | 148500 | 0.0561        |
+| 6.5520  | 149000 | 0.054         |
+| 6.5740  | 149500 | 0.0541        |
+| 6.5960  | 150000 | 0.0531        |
+| 6.6180  | 150500 | 0.0531        |
+| 6.6400  | 151000 | 0.0542        |
+| 6.6620  | 151500 | 0.053         |
+| 6.6840  | 152000 | 0.0562        |
+| 6.7059  | 152500 | 0.0542        |
+| 6.7279  | 153000 | 0.053         |
+| 6.7499  | 153500 | 0.0553        |
+| 6.7719  | 154000 | 0.0551        |
+| 6.7939  | 154500 | 0.0555        |
+| 6.8159  | 155000 | 0.0545        |
+| 6.8379  | 155500 | 0.0559        |
+| 6.8599  | 156000 | 0.0555        |
+| 6.8818  | 156500 | 0.0563        |
+| 6.9038  | 157000 | 0.0565        |
+| 6.9258  | 157500 | 0.0532        |
+| 6.9478  | 158000 | 0.0549        |
+| 6.9698  | 158500 | 0.0546        |
+| 6.9918  | 159000 | 0.0552        |
+| 7.0138  | 159500 | 0.0492        |
+| 7.0358  | 160000 | 0.0474        |
+| 7.0577  | 160500 | 0.0493        |
+| 7.0797  | 161000 | 0.047         |
+| 7.1017  | 161500 | 0.0498        |
+| 7.1237  | 162000 | 0.0473        |
+| 7.1457  | 162500 | 0.0487        |
+| 7.1677  | 163000 | 0.0514        |
+| 7.1897  | 163500 | 0.0494        |
+| 7.2116  | 164000 | 0.0481        |
+| 7.2336  | 164500 | 0.0469        |
+| 7.2556  | 165000 | 0.0481        |
+| 7.2776  | 165500 | 0.0476        |
+| 7.2996  | 166000 | 0.0482        |
+| 7.3216  | 166500 | 0.0491        |
+| 7.3436  | 167000 | 0.0497        |
+| 7.3656  | 167500 | 0.049         |
+| 7.3875  | 168000 | 0.0503        |
+| 7.4095  | 168500 | 0.0479        |
+| 7.4315  | 169000 | 0.0482        |
+| 7.4535  | 169500 | 0.0496        |
+| 7.4755  | 170000 | 0.0481        |
+| 7.4975  | 170500 | 0.0506        |
+| 7.5195  | 171000 | 0.0487        |
+| 7.5414  | 171500 | 0.0533        |
+| 7.5634  | 172000 | 0.0503        |
+| 7.5854  | 172500 | 0.0484        |
+| 7.6074  | 173000 | 0.0521        |
+| 7.6294  | 173500 | 0.0519        |
+| 7.6514  | 174000 | 0.0479        |
+| 7.6734  | 174500 | 0.047         |
+| 7.6954  | 175000 | 0.0518        |
+| 7.7173  | 175500 | 0.0496        |
+| 7.7393  | 176000 | 0.0516        |
+| 7.7613  | 176500 | 0.0477        |
+| 7.7833  | 177000 | 0.0484        |
+| 7.8053  | 177500 | 0.0511        |
+| 7.8273  | 178000 | 0.0506        |
+| 7.8493  | 178500 | 0.0492        |
+| 7.8712  | 179000 | 0.0501        |
+| 7.8932  | 179500 | 0.0503        |
+| 7.9152  | 180000 | 0.0496        |
+| 7.9372  | 180500 | 0.0496        |
+| 7.9592  | 181000 | 0.0512        |
+| 7.9812  | 181500 | 0.0507        |
+| 8.0032  | 182000 | 0.0486        |
+| 8.0252  | 182500 | 0.0416        |
+| 8.0471  | 183000 | 0.0439        |
+| 8.0691  | 183500 | 0.0428        |
+| 8.0911  | 184000 | 0.0464        |
+| 8.1131  | 184500 | 0.0435        |
+| 8.1351  | 185000 | 0.0442        |
+| 8.1571  | 185500 | 0.0451        |
+| 8.1791  | 186000 | 0.0457        |
+| 8.2010  | 186500 | 0.045         |
+| 8.2230  | 187000 | 0.0453        |
+| 8.2450  | 187500 | 0.0454        |
+| 8.2670  | 188000 | 0.0442        |
+| 8.2890  | 188500 | 0.044         |
+| 8.3110  | 189000 | 0.0446        |
+| 8.3330  | 189500 | 0.0465        |
+| 8.3550  | 190000 | 0.0452        |
+| 8.3769  | 190500 | 0.0457        |
+| 8.3989  | 191000 | 0.0464        |
+| 8.4209  | 191500 | 0.0423        |
+| 8.4429  | 192000 | 0.045         |
+| 8.4649  | 192500 | 0.0421        |
+| 8.4869  | 193000 | 0.0459        |
+| 8.5089  | 193500 | 0.0467        |
+| 8.5308  | 194000 | 0.0476        |
+| 8.5528  | 194500 | 0.046         |
+| 8.5748  | 195000 | 0.0444        |
+| 8.5968  | 195500 | 0.0473        |
+| 8.6188  | 196000 | 0.0464        |
+| 8.6408  | 196500 | 0.0464        |
+| 8.6628  | 197000 | 0.0452        |
+| 8.6848  | 197500 | 0.0445        |
+| 8.7067  | 198000 | 0.0466        |
+| 8.7287  | 198500 | 0.0471        |
+| 8.7507  | 199000 | 0.0476        |
+| 8.7727  | 199500 | 0.0457        |
+| 8.7947  | 200000 | 0.0462        |
+| 8.8167  | 200500 | 0.0475        |
+| 8.8387  | 201000 | 0.045         |
+| 8.8606  | 201500 | 0.0449        |
+| 8.8826  | 202000 | 0.046         |
+| 8.9046  | 202500 | 0.0458        |
+| 8.9266  | 203000 | 0.046         |
+| 8.9486  | 203500 | 0.0495        |
+| 8.9706  | 204000 | 0.0452        |
+| 8.9926  | 204500 | 0.046         |
+| 9.0146  | 205000 | 0.0411        |
+| 9.0365  | 205500 | 0.0387        |
+| 9.0585  | 206000 | 0.0389        |
+| 9.0805  | 206500 | 0.0413        |
+| 9.1025  | 207000 | 0.0408        |
+| 9.1245  | 207500 | 0.0417        |
+| 9.1465  | 208000 | 0.0408        |
+| 9.1685  | 208500 | 0.0411        |
+| 9.1904  | 209000 | 0.0418        |
+| 9.2124  | 209500 | 0.0417        |
+| 9.2344  | 210000 | 0.0407        |
+| 9.2564  | 210500 | 0.0403        |
+| 9.2784  | 211000 | 0.043         |
+| 9.3004  | 211500 | 0.0402        |
+| 9.3224  | 212000 | 0.0435        |
+| 9.3444  | 212500 | 0.0414        |
+| 9.3663  | 213000 | 0.0445        |
+| 9.3883  | 213500 | 0.0433        |
+| 9.4103  | 214000 | 0.0424        |
+| 9.4323  | 214500 | 0.0411        |
+| 9.4543  | 215000 | 0.0426        |
+| 9.4763  | 215500 | 0.0423        |
+| 9.4983  | 216000 | 0.042         |
+| 9.5202  | 216500 | 0.0432        |
+| 9.5422  | 217000 | 0.0419        |
+| 9.5642  | 217500 | 0.0441        |
+| 9.5862  | 218000 | 0.0429        |
+| 9.6082  | 218500 | 0.0426        |
+| 9.6302  | 219000 | 0.0416        |
+| 9.6522  | 219500 | 0.0427        |
+| 9.6742  | 220000 | 0.0431        |
+| 9.6961  | 220500 | 0.0428        |
+| 9.7181  | 221000 | 0.0421        |
+| 9.7401  | 221500 | 0.0432        |
+| 9.7621  | 222000 | 0.0426        |
+| 9.7841  | 222500 | 0.041         |
+| 9.8061  | 223000 | 0.0433        |
+| 9.8281  | 223500 | 0.0424        |
+| 9.8501  | 224000 | 0.0422        |
+| 9.8720  | 224500 | 0.0412        |
+| 9.8940  | 225000 | 0.0435        |
+| 9.9160  | 225500 | 0.0441        |
+| 9.9380  | 226000 | 0.0422        |
+| 9.9600  | 226500 | 0.0435        |
+| 9.9820  | 227000 | 0.0423        |
+| 10.0040 | 227500 | 0.0419        |
+| 10.0259 | 228000 | 0.0365        |
+| 10.0479 | 228500 | 0.0377        |
+| 10.0699 | 229000 | 0.0384        |
+| 10.0919 | 229500 | 0.0355        |
+| 10.1139 | 230000 | 0.0396        |
+| 10.1359 | 230500 | 0.0373        |
+| 10.1579 | 231000 | 0.0356        |
+| 10.1799 | 231500 | 0.0405        |
+| 10.2018 | 232000 | 0.0385        |
+| 10.2238 | 232500 | 0.0371        |
+| 10.2458 | 233000 | 0.0387        |
+| 10.2678 | 233500 | 0.0387        |
+| 10.2898 | 234000 | 0.0404        |
+| 10.3118 | 234500 | 0.0379        |
+| 10.3338 | 235000 | 0.039         |
+| 10.3557 | 235500 | 0.04          |
+| 10.3777 | 236000 | 0.0393        |
+| 10.3997 | 236500 | 0.0388        |
+| 10.4217 | 237000 | 0.0382        |
+| 10.4437 | 237500 | 0.0376        |
+| 10.4657 | 238000 | 0.0403        |
+| 10.4877 | 238500 | 0.039         |
+| 10.5097 | 239000 | 0.0389        |
+| 10.5316 | 239500 | 0.0402        |
+| 10.5536 | 240000 | 0.0375        |
+| 10.5756 | 240500 | 0.0396        |
+| 10.5976 | 241000 | 0.0383        |
+| 10.6196 | 241500 | 0.0413        |
+| 10.6416 | 242000 | 0.0384        |
+| 10.6636 | 242500 | 0.0411        |
+| 10.6855 | 243000 | 0.038         |
+| 10.7075 | 243500 | 0.0404        |
+| 10.7295 | 244000 | 0.0399        |
+| 10.7515 | 244500 | 0.0384        |
+| 10.7735 | 245000 | 0.0382        |
+| 10.7955 | 245500 | 0.0401        |
+| 10.8175 | 246000 | 0.0398        |
+| 10.8395 | 246500 | 0.0414        |
+| 10.8614 | 247000 | 0.0392        |
+| 10.8834 | 247500 | 0.0401        |
+| 10.9054 | 248000 | 0.038         |
+| 10.9274 | 248500 | 0.0394        |
+| 10.9494 | 249000 | 0.0399        |
+| 10.9714 | 249500 | 0.0412        |
+| 10.9934 | 250000 | 0.0408        |
+| 11.0153 | 250500 | 0.0368        |
+| 11.0373 | 251000 | 0.0365        |
+| 11.0593 | 251500 | 0.0347        |
+| 11.0813 | 252000 | 0.0347        |
+| 11.1033 | 252500 | 0.0364        |
+| 11.1253 | 253000 | 0.0388        |
+| 11.1473 | 253500 | 0.0338        |
+| 11.1693 | 254000 | 0.0379        |
+| 11.1912 | 254500 | 0.0351        |
+| 11.2132 | 255000 | 0.0364        |
+| 11.2352 | 255500 | 0.0351        |
+| 11.2572 | 256000 | 0.0381        |
+| 11.2792 | 256500 | 0.0357        |
+| 11.3012 | 257000 | 0.0357        |
+| 11.3232 | 257500 | 0.0357        |
+| 11.3451 | 258000 | 0.037         |
+| 11.3671 | 258500 | 0.0344        |
+| 11.3891 | 259000 | 0.0378        |
+| 11.4111 | 259500 | 0.0365        |
+| 11.4331 | 260000 | 0.0373        |
+| 11.4551 | 260500 | 0.0356        |
+| 11.4771 | 261000 | 0.0364        |
+| 11.4991 | 261500 | 0.0367        |
+| 11.5210 | 262000 | 0.0367        |
+| 11.5430 | 262500 | 0.0386        |
+| 11.5650 | 263000 | 0.0375        |
+| 11.5870 | 263500 | 0.0365        |
+| 11.6090 | 264000 | 0.0355        |
+| 11.6310 | 264500 | 0.0361        |
+| 11.6530 | 265000 | 0.0358        |
+| 11.6749 | 265500 | 0.0367        |
+| 11.6969 | 266000 | 0.0345        |
+| 11.7189 | 266500 | 0.0373        |
+| 11.7409 | 267000 | 0.0383        |
+| 11.7629 | 267500 | 0.0372        |
+| 11.7849 | 268000 | 0.0368        |
+| 11.8069 | 268500 | 0.0376        |
+| 11.8289 | 269000 | 0.0338        |
+| 11.8508 | 269500 | 0.0372        |
+| 11.8728 | 270000 | 0.0365        |
+| 11.8948 | 270500 | 0.0366        |
+| 11.9168 | 271000 | 0.0393        |
+| 11.9388 | 271500 | 0.0369        |
+| 11.9608 | 272000 | 0.0374        |
+| 11.9828 | 272500 | 0.0373        |
+| 12.0047 | 273000 | 0.0377        |
+| 12.0267 | 273500 | 0.0323        |
+| 12.0487 | 274000 | 0.0315        |
+| 12.0707 | 274500 | 0.0314        |
+| 12.0927 | 275000 | 0.0342        |
+| 12.1147 | 275500 | 0.0317        |
+| 12.1367 | 276000 | 0.034         |
+| 12.1587 | 276500 | 0.0341        |
+| 12.1806 | 277000 | 0.0324        |
+| 12.2026 | 277500 | 0.0334        |
+| 12.2246 | 278000 | 0.0341        |
+| 12.2466 | 278500 | 0.034         |
+| 12.2686 | 279000 | 0.0343        |
+| 12.2906 | 279500 | 0.0337        |
+| 12.3126 | 280000 | 0.0335        |
+| 12.3345 | 280500 | 0.0348        |
+| 12.3565 | 281000 | 0.035         |
+| 12.3785 | 281500 | 0.034         |
+| 12.4005 | 282000 | 0.0342        |
+| 12.4225 | 282500 | 0.0342        |
+| 12.4445 | 283000 | 0.0345        |
+| 12.4665 | 283500 | 0.0358        |
+| 12.4885 | 284000 | 0.0354        |
+| 12.5104 | 284500 | 0.0325        |
+| 12.5324 | 285000 | 0.0334        |
+| 12.5544 | 285500 | 0.0352        |
+| 12.5764 | 286000 | 0.0329        |
+| 12.5984 | 286500 | 0.0372        |
+| 12.6204 | 287000 | 0.0339        |
+| 12.6424 | 287500 | 0.0344        |
+| 12.6644 | 288000 | 0.0334        |
+| 12.6863 | 288500 | 0.0356        |
+| 12.7083 | 289000 | 0.0357        |
+| 12.7303 | 289500 | 0.0353        |
+| 12.7523 | 290000 | 0.036         |
+| 12.7743 | 290500 | 0.0351        |
+| 12.7963 | 291000 | 0.0347        |
+| 12.8183 | 291500 | 0.0342        |
+| 12.8402 | 292000 | 0.0361        |
+| 12.8622 | 292500 | 0.0352        |
+| 12.8842 | 293000 | 0.0339        |
+| 12.9062 | 293500 | 0.0349        |
+| 12.9282 | 294000 | 0.0364        |
+| 12.9502 | 294500 | 0.0371        |
+| 12.9722 | 295000 | 0.0353        |
+| 12.9942 | 295500 | 0.0353        |
+| 13.0161 | 296000 | 0.032         |
+| 13.0381 | 296500 | 0.0305        |
+| 13.0601 | 297000 | 0.0308        |
+| 13.0821 | 297500 | 0.0299        |
+| 13.1041 | 298000 | 0.0304        |
+| 13.1261 | 298500 | 0.0325        |
+| 13.1481 | 299000 | 0.0321        |
+| 13.1700 | 299500 | 0.034         |
+| 13.1920 | 300000 | 0.0313        |
+| 13.2140 | 300500 | 0.0329        |
+| 13.2360 | 301000 | 0.0318        |
+| 13.2580 | 301500 | 0.0304        |
+| 13.2800 | 302000 | 0.0325        |
+| 13.3020 | 302500 | 0.0337        |
+| 13.3240 | 303000 | 0.0308        |
+| 13.3459 | 303500 | 0.0301        |
+| 13.3679 | 304000 | 0.0312        |
+| 13.3899 | 304500 | 0.0319        |
+| 13.4119 | 305000 | 0.0312        |
+| 13.4339 | 305500 | 0.0306        |
+| 13.4559 | 306000 | 0.0307        |
+| 13.4779 | 306500 | 0.0318        |
+| 13.4998 | 307000 | 0.0336        |
+| 13.5218 | 307500 | 0.0322        |
+| 13.5438 | 308000 | 0.0319        |
+| 13.5658 | 308500 | 0.0348        |
+| 13.5878 | 309000 | 0.0324        |
+| 13.6098 | 309500 | 0.0327        |
+| 13.6318 | 310000 | 0.0322        |
+| 13.6538 | 310500 | 0.0306        |
+| 13.6757 | 311000 | 0.0321        |
+| 13.6977 | 311500 | 0.0311        |
+| 13.7197 | 312000 | 0.0322        |
+| 13.7417 | 312500 | 0.0326        |
+| 13.7637 | 313000 | 0.0322        |
+| 13.7857 | 313500 | 0.0319        |
+| 13.8077 | 314000 | 0.0356        |
+| 13.8296 | 314500 | 0.0316        |
+| 13.8516 | 315000 | 0.0337        |
+| 13.8736 | 315500 | 0.0368        |
+| 13.8956 | 316000 | 0.0319        |
+| 13.9176 | 316500 | 0.0345        |
+| 13.9396 | 317000 | 0.0326        |
+| 13.9616 | 317500 | 0.0322        |
+| 13.9836 | 318000 | 0.0336        |
+| 14.0055 | 318500 | 0.0311        |
+| 14.0275 | 319000 | 0.03          |
+| 14.0495 | 319500 | 0.0294        |
+| 14.0715 | 320000 | 0.0297        |
+| 14.0935 | 320500 | 0.0287        |
+| 14.1155 | 321000 | 0.0284        |
+| 14.1375 | 321500 | 0.0318        |
+| 14.1594 | 322000 | 0.0301        |
+| 14.1814 | 322500 | 0.0298        |
+| 14.2034 | 323000 | 0.031         |
+| 14.2254 | 323500 | 0.0303        |
+| 14.2474 | 324000 | 0.0308        |
+| 14.2694 | 324500 | 0.0307        |
+| 14.2914 | 325000 | 0.0309        |
+| 14.3134 | 325500 | 0.03          |
+| 14.3353 | 326000 | 0.0299        |
+| 14.3573 | 326500 | 0.0309        |
+| 14.3793 | 327000 | 0.0301        |
+| 14.4013 | 327500 | 0.03          |
+| 14.4233 | 328000 | 0.0313        |
+| 14.4453 | 328500 | 0.0299        |
+| 14.4673 | 329000 | 0.0286        |
+| 14.4892 | 329500 | 0.0302        |
+| 14.5112 | 330000 | 0.0305        |
+| 14.5332 | 330500 | 0.0291        |
+| 14.5552 | 331000 | 0.0314        |
+| 14.5772 | 331500 | 0.0307        |
+| 14.5992 | 332000 | 0.0298        |
+| 14.6212 | 332500 | 0.031         |
+| 14.6432 | 333000 | 0.0313        |
+| 14.6651 | 333500 | 0.0314        |
+| 14.6871 | 334000 | 0.0303        |
+| 14.7091 | 334500 | 0.0305        |
+| 14.7311 | 335000 | 0.0318        |
+| 14.7531 | 335500 | 0.0294        |
+| 14.7751 | 336000 | 0.0313        |
+| 14.7971 | 336500 | 0.0315        |
+| 14.8190 | 337000 | 0.0306        |
+| 14.8410 | 337500 | 0.0322        |
+| 14.8630 | 338000 | 0.0302        |
+| 14.8850 | 338500 | 0.0316        |
+| 14.9070 | 339000 | 0.0316        |
+| 14.9290 | 339500 | 0.0317        |
+| 14.9510 | 340000 | 0.0309        |
+| 14.9730 | 340500 | 0.0304        |
+| 14.9949 | 341000 | 0.0324        |
+| 15.0169 | 341500 | 0.0297        |
+| 15.0389 | 342000 | 0.0283        |
+| 15.0609 | 342500 | 0.03          |
+| 15.0829 | 343000 | 0.029         |
+| 15.1049 | 343500 | 0.0274        |
+| 15.1269 | 344000 | 0.028         |
+| 15.1489 | 344500 | 0.0298        |
+| 15.1708 | 345000 | 0.0294        |
+| 15.1928 | 345500 | 0.0276        |
+| 15.2148 | 346000 | 0.0294        |
+| 15.2368 | 346500 | 0.0263        |
+| 15.2588 | 347000 | 0.028         |
+| 15.2808 | 347500 | 0.0305        |
+| 15.3028 | 348000 | 0.0308        |
+| 15.3247 | 348500 | 0.0289        |
+| 15.3467 | 349000 | 0.0293        |
+| 15.3687 | 349500 | 0.0288        |
+| 15.3907 | 350000 | 0.029         |
+| 15.4127 | 350500 | 0.0309        |
+| 15.4347 | 351000 | 0.0292        |
+| 15.4567 | 351500 | 0.0296        |
+| 15.4787 | 352000 | 0.029         |
+| 15.5006 | 352500 | 0.0283        |
+| 15.5226 | 353000 | 0.0278        |
+| 15.5446 | 353500 | 0.0284        |
+| 15.5666 | 354000 | 0.0264        |
+| 15.5886 | 354500 | 0.0296        |
+| 15.6106 | 355000 | 0.0291        |
+| 15.6326 | 355500 | 0.0274        |
+| 15.6545 | 356000 | 0.0287        |
+| 15.6765 | 356500 | 0.0304        |
+| 15.6985 | 357000 | 0.0281        |
+| 15.7205 | 357500 | 0.0296        |
+| 15.7425 | 358000 | 0.031         |
+| 15.7645 | 358500 | 0.0282        |
+| 15.7865 | 359000 | 0.0292        |
+| 15.8085 | 359500 | 0.0281        |
+| 15.8304 | 360000 | 0.0289        |
+| 15.8524 | 360500 | 0.0292        |
+| 15.8744 | 361000 | 0.03          |
+| 15.8964 | 361500 | 0.0303        |
+| 15.9184 | 362000 | 0.0279        |
+| 15.9404 | 362500 | 0.0286        |
+| 15.9624 | 363000 | 0.0284        |
+| 15.9843 | 363500 | 0.0289        |
+| 16.0063 | 364000 | 0.0294        |
+| 16.0283 | 364500 | 0.027         |
+| 16.0503 | 365000 | 0.0269        |
+| 16.0723 | 365500 | 0.0284        |
+| 16.0943 | 366000 | 0.0265        |
+| 16.1163 | 366500 | 0.0277        |
+| 16.1383 | 367000 | 0.0267        |
+| 16.1602 | 367500 | 0.0262        |
+| 16.1822 | 368000 | 0.0276        |
+| 16.2042 | 368500 | 0.0268        |
+| 16.2262 | 369000 | 0.0275        |
+| 16.2482 | 369500 | 0.0262        |
+| 16.2702 | 370000 | 0.0269        |
+| 16.2922 | 370500 | 0.0283        |
+| 16.3141 | 371000 | 0.027         |
+| 16.3361 | 371500 | 0.0285        |
+| 16.3581 | 372000 | 0.0267        |
+| 16.3801 | 372500 | 0.0275        |
+| 16.4021 | 373000 | 0.0273        |
+| 16.4241 | 373500 | 0.0276        |
+| 16.4461 | 374000 | 0.0276        |
+| 16.4681 | 374500 | 0.0276        |
+| 16.4900 | 375000 | 0.0293        |
+| 16.5120 | 375500 | 0.0273        |
+| 16.5340 | 376000 | 0.0284        |
+| 16.5560 | 376500 | 0.0276        |
+| 16.5780 | 377000 | 0.0275        |
+| 16.6000 | 377500 | 0.0287        |
+| 16.6220 | 378000 | 0.0269        |
+| 16.6439 | 378500 | 0.0293        |
+| 16.6659 | 379000 | 0.0279        |
+| 16.6879 | 379500 | 0.0282        |
+| 16.7099 | 380000 | 0.028         |
+| 16.7319 | 380500 | 0.0293        |
+| 16.7539 | 381000 | 0.028         |
+| 16.7759 | 381500 | 0.0272        |
+| 16.7979 | 382000 | 0.0281        |
+| 16.8198 | 382500 | 0.0292        |
+| 16.8418 | 383000 | 0.0277        |
+| 16.8638 | 383500 | 0.0276        |
+| 16.8858 | 384000 | 0.0273        |
+| 16.9078 | 384500 | 0.0267        |
+| 16.9298 | 385000 | 0.0283        |
+| 16.9518 | 385500 | 0.029         |
+| 16.9737 | 386000 | 0.0287        |
+| 16.9957 | 386500 | 0.0264        |
+| 17.0177 | 387000 | 0.0262        |
+| 17.0397 | 387500 | 0.0258        |
+| 17.0617 | 388000 | 0.0254        |
+| 17.0837 | 388500 | 0.0264        |
+| 17.1057 | 389000 | 0.0267        |
+| 17.1277 | 389500 | 0.0262        |
+| 17.1496 | 390000 | 0.0263        |
+| 17.1716 | 390500 | 0.0274        |
+| 17.1936 | 391000 | 0.027         |
+| 17.2156 | 391500 | 0.0278        |
+| 17.2376 | 392000 | 0.0258        |
+| 17.2596 | 392500 | 0.0269        |
+| 17.2816 | 393000 | 0.0276        |
+| 17.3035 | 393500 | 0.0261        |
+| 17.3255 | 394000 | 0.0254        |
+| 17.3475 | 394500 | 0.0273        |
+| 17.3695 | 395000 | 0.0264        |
+| 17.3915 | 395500 | 0.0243        |
+| 17.4135 | 396000 | 0.0279        |
+| 17.4355 | 396500 | 0.0274        |
+| 17.4575 | 397000 | 0.0275        |
+| 17.4794 | 397500 | 0.026         |
+| 17.5014 | 398000 | 0.0262        |
+| 17.5234 | 398500 | 0.026         |
+| 17.5454 | 399000 | 0.0288        |
+| 17.5674 | 399500 | 0.0284        |
+| 17.5894 | 400000 | 0.0257        |
+| 17.6114 | 400500 | 0.0263        |
+| 17.6333 | 401000 | 0.0275        |
+| 17.6553 | 401500 | 0.0268        |
+| 17.6773 | 402000 | 0.0264        |
+| 17.6993 | 402500 | 0.0268        |
+| 17.7213 | 403000 | 0.0282        |
+| 17.7433 | 403500 | 0.0262        |
+| 17.7653 | 404000 | 0.026         |
+| 17.7873 | 404500 | 0.0282        |
+| 17.8092 | 405000 | 0.0255        |
+| 17.8312 | 405500 | 0.0256        |
+| 17.8532 | 406000 | 0.0269        |
+| 17.8752 | 406500 | 0.0265        |
+| 17.8972 | 407000 | 0.027         |
+| 17.9192 | 407500 | 0.0262        |
+| 17.9412 | 408000 | 0.0263        |
+| 17.9632 | 408500 | 0.0276        |
+| 17.9851 | 409000 | 0.0282        |
+| 18.0071 | 409500 | 0.0277        |
+| 18.0291 | 410000 | 0.0264        |
+| 18.0511 | 410500 | 0.0257        |
+| 18.0731 | 411000 | 0.0273        |
+| 18.0951 | 411500 | 0.0247        |
+| 18.1171 | 412000 | 0.0253        |
+| 18.1390 | 412500 | 0.0255        |
+| 18.1610 | 413000 | 0.0245        |
+| 18.1830 | 413500 | 0.0254        |
+| 18.2050 | 414000 | 0.0249        |
+| 18.2270 | 414500 | 0.0264        |
+| 18.2490 | 415000 | 0.0271        |
+| 18.2710 | 415500 | 0.0256        |
+| 18.2930 | 416000 | 0.0245        |
+| 18.3149 | 416500 | 0.0268        |
+| 18.3369 | 417000 | 0.0256        |
+| 18.3589 | 417500 | 0.0254        |
+| 18.3809 | 418000 | 0.0253        |
+| 18.4029 | 418500 | 0.0243        |
+| 18.4249 | 419000 | 0.0256        |
+| 18.4469 | 419500 | 0.026         |
+| 18.4688 | 420000 | 0.0266        |
+| 18.4908 | 420500 | 0.0273        |
+| 18.5128 | 421000 | 0.0281        |
+| 18.5348 | 421500 | 0.0268        |
+| 18.5568 | 422000 | 0.0256        |
+| 18.5788 | 422500 | 0.0257        |
+| 18.6008 | 423000 | 0.0255        |
+| 18.6228 | 423500 | 0.0246        |
+| 18.6447 | 424000 | 0.0258        |
+| 18.6667 | 424500 | 0.0256        |
+| 18.6887 | 425000 | 0.0252        |
+| 18.7107 | 425500 | 0.0251        |
+| 18.7327 | 426000 | 0.0261        |
+| 18.7547 | 426500 | 0.0252        |
+| 18.7767 | 427000 | 0.0264        |
+| 18.7986 | 427500 | 0.0272        |
+| 18.8206 | 428000 | 0.025         |
+| 18.8426 | 428500 | 0.0248        |
+| 18.8646 | 429000 | 0.0261        |
+| 18.8866 | 429500 | 0.0247        |
+| 18.9086 | 430000 | 0.0255        |
+| 18.9306 | 430500 | 0.0266        |
+| 18.9526 | 431000 | 0.0236        |
+| 18.9745 | 431500 | 0.0257        |
+| 18.9965 | 432000 | 0.0262        |
+| 19.0185 | 432500 | 0.027         |
+| 19.0405 | 433000 | 0.0261        |
+| 19.0625 | 433500 | 0.0238        |
+| 19.0845 | 434000 | 0.0249        |
+| 19.1065 | 434500 | 0.0258        |
+| 19.1284 | 435000 | 0.0253        |
+| 19.1504 | 435500 | 0.0257        |
+| 19.1724 | 436000 | 0.0249        |
+| 19.1944 | 436500 | 0.0249        |
+| 19.2164 | 437000 | 0.0265        |
+| 19.2384 | 437500 | 0.0247        |
+| 19.2604 | 438000 | 0.0242        |
+| 19.2824 | 438500 | 0.0242        |
+| 19.3043 | 439000 | 0.0262        |
+| 19.3263 | 439500 | 0.0255        |
+| 19.3483 | 440000 | 0.0261        |
+| 19.3703 | 440500 | 0.0256        |
+| 19.3923 | 441000 | 0.0264        |
+| 19.4143 | 441500 | 0.0243        |
+| 19.4363 | 442000 | 0.0245        |
+| 19.4582 | 442500 | 0.0242        |
+| 19.4802 | 443000 | 0.027         |
+| 19.5022 | 443500 | 0.0239        |
+| 19.5242 | 444000 | 0.0248        |
+| 19.5462 | 444500 | 0.0245        |
+| 19.5682 | 445000 | 0.0252        |
+| 19.5902 | 445500 | 0.0256        |
+| 19.6122 | 446000 | 0.0257        |
+| 19.6341 | 446500 | 0.0245        |
+| 19.6561 | 447000 | 0.0255        |
+| 19.6781 | 447500 | 0.0244        |
+| 19.7001 | 448000 | 0.0252        |
+| 19.7221 | 448500 | 0.0251        |
+| 19.7441 | 449000 | 0.0256        |
+| 19.7661 | 449500 | 0.0238        |
+| 19.7880 | 450000 | 0.0252        |
+| 19.8100 | 450500 | 0.0253        |
+| 19.8320 | 451000 | 0.0238        |
+| 19.8540 | 451500 | 0.0255        |
+| 19.8760 | 452000 | 0.0236        |
+| 19.8980 | 452500 | 0.0251        |
+| 19.9200 | 453000 | 0.024         |
+| 19.9420 | 453500 | 0.0243        |
+| 19.9639 | 454000 | 0.0239        |
+| 19.9859 | 454500 | 0.0249        |
+
+</details>
+
 ### Framework Versions
-- Python: 3.14.3
-- Sentence Transformers: 5.3.0
-- Transformers: 5.4.0
-- PyTorch: 2.11.0
-- Accelerate: 1.13.0
-- Datasets: 4.8.4
+- Python: 3.9.6
+- Sentence Transformers: 5.1.2
+- Transformers: 4.57.6
+- PyTorch: 2.8.0
+- Accelerate: 1.10.1
+- Datasets: 4.5.0
 - Tokenizers: 0.22.2
 
 ## Citation
