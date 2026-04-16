@@ -4,26 +4,33 @@ from models.device import get_device
 
 _model = None
 
-def initialize_models():
+def initialize_models(model_type='mpnet'):
     """
     Loads the machine learning models into memory lazily.
-    Checks for locally fine-tuned models first, then falls back to base model.
+    Checks for locally fine-tuned models (mpnet or minilm) first, then falls back to base model.
     """
     global _model
     if _model is None:
         try:
             device_str = str(get_device())
-            print(f"Loading transformer model to {device_str}...")
+            print(f"Loading transformer model ({model_type}) to {device_str}...")
             
-            # Use pre-trained all-MiniLM-L6-v2 as a highly capable baseline if fine-tuned weights aren't present yet.
-            # You can change the path here once your local training script finishes.
-            model_name_or_path = "all-MiniLM-L6-v2"
+            # Use pre-trained all-mpnet-base-v2 as a highly capable baseline
+            model_name_or_path = "all-mpnet-base-v2"
             
-            # Optional: Check if a locally saved model directory exists and use it
-            saved_model_path = os.path.join(os.path.dirname(__file__), 'saved_model')
-            if os.path.isdir(saved_model_path):
-                print(f"Found fine-tuned model at {saved_model_path}, loading it...")
-                model_name_or_path = saved_model_path
+            # Check for specific saved model directories
+            base_path = os.path.dirname(__file__)
+            mpnet_path = os.path.join(base_path, 'saved_model_mpnet')
+            minilm_path = os.path.join(base_path, 'saved_model_minilm')
+            
+            if model_type == 'mpnet' and os.path.isdir(mpnet_path):
+                print(f"Found fine-tuned MPNet model at {mpnet_path}, loading it...")
+                model_name_or_path = mpnet_path
+            elif model_type == 'minilm' and os.path.isdir(minilm_path):
+                print(f"Found fine-tuned MiniLM model at {minilm_path}, loading it...")
+                model_name_or_path = minilm_path
+            elif os.path.isdir(os.path.join(base_path, 'saved_model')): # Backward compatibility
+                model_name_or_path = os.path.join(base_path, 'saved_model')
                 
             _model = SentenceTransformer(model_name_or_path, device=device_str)
             print("Model loaded successfully.")
