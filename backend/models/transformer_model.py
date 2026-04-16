@@ -8,8 +8,7 @@ def train_transformer_model():
     device_str = str(get_device())
     print(f"Using device: {device_str}")
     
-    # Load Sentence-BERT
-    # all-MiniLM-L6-v2 is an excellent baseline for semantic similarity.
+    # Reverting to the Bi-Encoder architecture as requested.
     model = SentenceTransformer('all-MiniLM-L6-v2', device=device_str)
 
     print("Loading Quora Question Pairs dataset...")
@@ -25,13 +24,12 @@ def train_transformer_model():
     # Define DataLoader
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
 
-    # Define Loss function
-    # CosineSimilarityLoss works best when labels are floats [0, 1]
-    train_loss = losses.CosineSimilarityLoss(model)
+    # Switching to standard ContrastiveLoss. 
+    # (OnlineContrastiveLoss dynamically mines hard negatives, which involves extremely complex tensor sorting 
+    # that currently triggers a known bug in Apple Silicon's MPS GPU driver during gradient calculation).
+    train_loss = losses.ContrastiveLoss(model=model, margin=0.5)
 
     print("Starting training...")
-    # Fine-tune the model
-    # Note: 'optimizer_params' defaults to AdamW under the hood in SentenceTransformers.
     model.fit(
         train_objectives=[(train_dataloader, train_loss)],
         epochs=20,
