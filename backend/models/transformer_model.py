@@ -15,7 +15,7 @@ def train_transformer_model():
     print("Loading Quora Question Pairs dataset...")
     # NOTE: Using a restricted subset (e.g. train[:200]) to quickly verify the pipeline end-to-end.
     # To run a full training on the M4/MPS or CUDA GPU, remove the `split` slice.
-    dataset = load_dataset("glue", "qqp", split="train[:200]")
+    dataset = load_dataset("glue", "qqp", split="train")
 
     train_examples = []
     for row in dataset:
