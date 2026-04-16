@@ -5,42 +5,42 @@ tags:
 - feature-extraction
 - dense
 - generated_from_trainer
-- dataset_size:200
+- dataset_size:363846
 - loss:CosineSimilarityLoss
 base_model: sentence-transformers/all-MiniLM-L6-v2
 widget:
-- source_sentence: What are micronutrients and macronutrients? How do you distinguish
-    the difference between micronutrients and macronutrients?
+- source_sentence: How do I find my social security number online for free?
   sentences:
-  - How do you distinguish the difference between micronutrients and macronutrients?
-  - What does the daily schedule of those successful people look like?
-  - Would a second airport in Sydney, Australia be needed if a high-speed rail link
-    was created between Melbourne and Sydney?
-- source_sentence: How do I get police job with criminal record?
+  - How can I earn a few dollars in just a week?
+  - How can I get a copy of my social security number online?
+  - How can I tell someone who has virtually no empathy that it really hurts that
+    they don't show remorse or care in their language?
+- source_sentence: '"How can I fix ""Error 105 (net::ERR_NAME_NOT_RESOLVED): The server
+    could not be found."" on Chrome?"'
   sentences:
-  - What is the best way to meet new people?
-  - How do you get a job with a criminal record?
-  - Would it be just as difficult, or maybe even more difficult, to make an irrational
-    AI robot as it would be to make a rational one?
-- source_sentence: Apart from Listverse and Toptenz which are the other popular list
-    website?
+  - '"What is ""internal link stacking""?"'
+  - '"How do you fix the ""no data received"" error on Chrome?"'
+  - How do I stop my pet rat from biting me?
+- source_sentence: How can you maximize your happiness in life?
   sentences:
-  - How do I get into IB india?
-  - What would be the easiest popular website to code from scratch?
-  - What should I do when I don't know what exactly is the purpose of my existence?
-- source_sentence: Would you go out with a friend?
+  - Should I buy an iPhone 6 plus with a potential bending problem, or should I wait
+    until Apple gives a genuine response?
+  - In your opinion, what is the most fundamental skincare product you can use every
+    day?
+  - How do we sustain happiness in life?
+- source_sentence: How can I reach Taj Mahal Hotel, Colaba from Mumbai Airport?
   sentences:
-  - Is it not normal to go out with friends?
-  - What are the best websites for entrepreneur?
-  - What are the ways of losing weight?
-- source_sentence: Can I enter University of Melbourne if I couldn't achieve the guaranteed
-    marks in Trinity College Foundation?
+  - How can I reach Hinjewadi, Pune from Borivali, Mumbai?
+  - Should I (a prospective Indian student) stop applying to universities in the USA,
+    now that Donald Trump has become the president?
+  - What are some good technology magazines to subscribe in India?
+- source_sentence: How many marks should I get in JEE main paper 2 to get into NITs?
   sentences:
-  - 'University of the Philippines: If I take a second BFA in the UP College of Fine
-    Arts, can I be exempted from gen. ed. or core subjects?'
-  - What is your thoughts on the theory that all of us living, is just the Earth being
-    aware of itself?
-  - What is the perception of Mikhail Gorbachev among Russians today?
+  - I have got 93% marks in 12th and 121 marks in Nata. I got 212 in Jee mains Paper
+    2. Will I get NIT or any govt. colleges in Kerala?
+  - Are there any moments in your life that you thought were insignificant at the
+    time but ended up being very important in retrospect? If so, what are they?
+  - How does Chinese military compare with the military capabilities of USSR?
 pipeline_tag: sentence-similarity
 library_name: sentence-transformers
 ---
@@ -95,9 +95,9 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("sentence_transformers_model_id")
 # Run inference
 sentences = [
-    "Can I enter University of Melbourne if I couldn't achieve the guaranteed marks in Trinity College Foundation?",
-    'University of the Philippines: If I take a second BFA in the UP College of Fine Arts, can I be exempted from gen. ed. or core subjects?',
-    'What is the perception of Mikhail Gorbachev among Russians today?',
+    'How many marks should I get in JEE main paper 2 to get into NITs?',
+    'I have got 93% marks in 12th and 121 marks in Nata. I got 212 in Jee mains Paper 2. Will I get NIT or any govt. colleges in Kerala?',
+    'Are there any moments in your life that you thought were insignificant at the time but ended up being very important in retrospect? If so, what are they?',
 ]
 embeddings = model.encode(sentences)
 print(embeddings.shape)
@@ -106,9 +106,9 @@ print(embeddings.shape)
 # Get the similarity scores for the embeddings
 similarities = model.similarity(embeddings, embeddings)
 print(similarities)
-# tensor([[ 1.0000,  0.3475, -0.1033],
-#         [ 0.3475,  1.0000, -0.0937],
-#         [-0.1033, -0.0937,  1.0000]])
+# tensor([[ 1.0000, -0.0168, -0.1096],
+#         [-0.0168,  1.0000, -0.0872],
+#         [-0.1096, -0.0872,  1.0000]])
 ```
 
 <!--
@@ -153,19 +153,19 @@ You can finetune this model on your own dataset.
 
 #### Unnamed Dataset
 
-* Size: 200 training samples
+* Size: 363,846 training samples
 * Columns: <code>sentence_0</code>, <code>sentence_1</code>, and <code>label</code>
-* Approximate statistics based on the first 200 samples:
+* Approximate statistics based on the first 1000 samples:
   |         | sentence_0                                                                        | sentence_1                                                                        | label                                                          |
   |:--------|:----------------------------------------------------------------------------------|:----------------------------------------------------------------------------------|:---------------------------------------------------------------|
   | type    | string                                                                            | string                                                                            | float                                                          |
-  | details | <ul><li>min: 6 tokens</li><li>mean: 15.28 tokens</li><li>max: 42 tokens</li></ul> | <ul><li>min: 7 tokens</li><li>mean: 15.76 tokens</li><li>max: 82 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.38</li><li>max: 1.0</li></ul> |
+  | details | <ul><li>min: 6 tokens</li><li>mean: 15.69 tokens</li><li>max: 60 tokens</li></ul> | <ul><li>min: 6 tokens</li><li>mean: 15.51 tokens</li><li>max: 67 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.37</li><li>max: 1.0</li></ul> |
 * Samples:
-  | sentence_0                                                | sentence_1                                                     | label            |
-  |:----------------------------------------------------------|:---------------------------------------------------------------|:-----------------|
-  | <code>What is the best free VPN?</code>                   | <code>What are the best Free VPN for Indonesia?</code>         | <code>0.0</code> |
-  | <code>What causes stool color to change to yellow?</code> | <code>What can cause stool to come out as little balls?</code> | <code>0.0</code> |
-  | <code>What are some neurogaming startups?</code>          | <code>What are startups?</code>                                | <code>0.0</code> |
+  | sentence_0                                                        | sentence_1                                                                                     | label            |
+  |:------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------|:-----------------|
+  | <code>How many rounds are there in a Google interview?</code>     | <code>I ranked under 50 in Google Apac Test Round B. Should I expect an interview call?</code> | <code>0.0</code> |
+  | <code>Is Quora becoming more or less like Facebook?</code>        | <code>Why is Quora becoming like Facebook?</code>                                              | <code>0.0</code> |
+  | <code>Which is the most ancient civilization in the earth?</code> | <code>Which was the first civilization on earth?</code>                                        | <code>1.0</code> |
 * Loss: [<code>CosineSimilarityLoss</code>](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#cosinesimilarityloss) with these parameters:
   ```json
   {
@@ -283,6 +283,56 @@ You can finetune this model on your own dataset.
 - `learning_rate_mapping`: {}
 
 </details>
+
+### Training Logs
+| Epoch  | Step  | Training Loss |
+|:------:|:-----:|:-------------:|
+| 0.0220 | 500   | 0.1585        |
+| 0.0440 | 1000  | 0.1397        |
+| 0.0660 | 1500  | 0.1363        |
+| 0.0879 | 2000  | 0.1337        |
+| 0.1099 | 2500  | 0.1321        |
+| 0.1319 | 3000  | 0.1282        |
+| 0.1539 | 3500  | 0.1275        |
+| 0.1759 | 4000  | 0.1271        |
+| 0.1979 | 4500  | 0.1250        |
+| 0.2199 | 5000  | 0.1254        |
+| 0.2419 | 5500  | 0.1228        |
+| 0.2638 | 6000  | 0.1227        |
+| 0.2858 | 6500  | 0.1220        |
+| 0.3078 | 7000  | 0.1155        |
+| 0.3298 | 7500  | 0.1199        |
+| 0.3518 | 8000  | 0.1160        |
+| 0.3738 | 8500  | 0.1154        |
+| 0.3958 | 9000  | 0.1202        |
+| 0.4177 | 9500  | 0.1174        |
+| 0.4397 | 10000 | 0.1132        |
+| 0.4617 | 10500 | 0.1165        |
+| 0.4837 | 11000 | 0.1146        |
+| 0.5057 | 11500 | 0.1181        |
+| 0.5277 | 12000 | 0.1122        |
+| 0.5497 | 12500 | 0.1131        |
+| 0.5717 | 13000 | 0.1120        |
+| 0.5936 | 13500 | 0.1157        |
+| 0.6156 | 14000 | 0.1115        |
+| 0.6376 | 14500 | 0.1110        |
+| 0.6596 | 15000 | 0.1111        |
+| 0.6816 | 15500 | 0.1117        |
+| 0.7036 | 16000 | 0.1090        |
+| 0.7256 | 16500 | 0.1082        |
+| 0.7475 | 17000 | 0.1099        |
+| 0.7695 | 17500 | 0.1084        |
+| 0.7915 | 18000 | 0.1109        |
+| 0.8135 | 18500 | 0.1128        |
+| 0.8355 | 19000 | 0.1138        |
+| 0.8575 | 19500 | 0.1090        |
+| 0.8795 | 20000 | 0.1095        |
+| 0.9015 | 20500 | 0.1091        |
+| 0.9234 | 21000 | 0.1075        |
+| 0.9454 | 21500 | 0.1113        |
+| 0.9674 | 22000 | 0.1103        |
+| 0.9894 | 22500 | 0.1072        |
+
 
 ### Framework Versions
 - Python: 3.14.3
