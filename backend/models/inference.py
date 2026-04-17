@@ -43,7 +43,7 @@ def predict_similarity(text1: str, text2: str) -> tuple[float, bool]:
     cosine_score = util.cos_sim(embeddings1, embeddings2).item()
     
     # We use MiniLM out of the box because it is highly optimized for semantic similarity.
-    # Simple thresholding logic: If score > 0.75, it's considered a paraphrase.
+    # Simple thresholding logic: If score > 0.60, it's considered a paraphrase.
     is_paraphrase = cosine_score >= 0.60
     
     return cosine_score, is_paraphrase
