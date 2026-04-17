@@ -33,7 +33,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030304] text-gray-300 font-sans flex gap-6 px-6 overflow-hidden">
+    <div className="min-h-screen w-full text-gray-300 font-sans flex gap-6 px-6">
       {/* Background Glow */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-15%] left-[-5%] w-[60%] h-[60%] bg-blue-600/5 blur-[140px] rounded-full" />
@@ -63,42 +63,50 @@ export default function App() {
             </span>
           </h1>
 
-          <div className="space-y-10">
+          <div className="space-y-6 text-sm text-gray-400 leading-relaxed">
+
+            {/* Model */}
             <section>
-              <div className="flex items-center gap-3 text-white mb-3 font-bold text-sm">
-                <Cpu size={16} className="text-blue-400" />
-                <h3>NEURAL PIPELINE</h3>
-              </div>
-              <p className="text-xs text-gray-500">
-                Sentence-BERT + cosine similarity.
+              <h3 className="text-white font-semibold mb-1">Model</h3>
+              <p>
+                Uses <span className="text-gray-200">all-mpnet-base-v2 (SBERT)</span> for
+                high-quality semantic understanding and better handling of nuanced language.
               </p>
             </section>
 
+            {/* Training */}
             <section>
-              <div className="flex items-center gap-3 text-white mb-3 font-bold text-sm">
-                <Database size={16} className="text-indigo-400" />
-                <h3>DATASETS</h3>
-              </div>
-              <p className="text-xs text-gray-500">
-                Quora Pairs + STS Benchmark.
+              <h3 className="text-white font-semibold mb-1">Training</h3>
+              <p>
+                Trained with <span className="text-gray-200">Contrastive Loss</span> and
+                custom hard-negative samples to improve handling of negation and tricky cases.
               </p>
             </section>
 
+            {/* Dataset */}
             <section>
-              <div className="flex items-center gap-3 text-white mb-3 font-bold text-sm">
-                <BarChart3 size={16} className="text-emerald-400" />
-                <h3>OUTPUT</h3>
-              </div>
-              <p className="text-xs text-gray-500">
-                Returns similarity score + paraphrase prediction.
+              <h3 className="text-white font-semibold mb-1">Dataset</h3>
+              <p>
+                Fine-tuned on <span className="text-gray-200">Quora Question Pairs</span> using
+                a curated subset of high-quality examples.
               </p>
             </section>
+
+            {/* Output */}
+            <section>
+              <h3 className="text-white font-semibold mb-1">Output</h3>
+              <p>
+                Computes cosine similarity with a <span className="text-gray-200">0.75 threshold</span>
+                to classify paraphrases accurately.
+              </p>
+            </section>
+
           </div>
         </div>
       </motion.div>
 
       {/* Main */}
-      <main className="flex-1 pl-24 pr-20 py-16 flex flex-col relative z-10">
+     <main className="flex-1 pl-24 pr-20 py-16 flex flex-col relative z-10 min-h-screen">
         {/* Header */}
         <header className="mb-12 border-b border-white/5 pb-6">
           <h2 className="text-white text-lg font-semibold">

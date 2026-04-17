@@ -32,7 +32,7 @@ class AnalyzeResponse(BaseModel):
 
 @app.get("/")
 def health_check():
-    return {"status": "Backend running 🚀"}
+    return {"status": "Backend running"}
 
 @app.post("/analyze", response_model=AnalyzeResponse)
 def analyze(payload: AnalyzeRequest):

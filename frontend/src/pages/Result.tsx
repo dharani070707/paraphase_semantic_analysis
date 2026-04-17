@@ -87,7 +87,7 @@ export default function Result() {
               <h2 className="text-2xl font-semibold">
                 {data.paraphrase
                   ? "Yes, both the sentences are semantically similar"
-                  : "No, different sentences are different"}
+                  : "Not semantically similar both sentences are different"}
               </h2>
             </div>
           </motion.div>
