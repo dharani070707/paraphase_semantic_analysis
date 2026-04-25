@@ -1,74 +1,98 @@
 import os
+import random
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer, InputExample, losses
 from torch.utils.data import DataLoader
 from models.device import get_device
+
+def generate_synthetic_negatives(texts, count=1000):
+    """
+    Generates diverse negation and swap patterns from existing texts.
+    """
+    negations = ["not ", "never ", "fails to ", "does not ", "didn't ", "hardly "]
+    synthetic = []
+    
+    for _ in range(count):
+        text = random.choice(texts)
+        words = text.split()
+        if len(words) < 4: continue
+        
+        # 1. Simple negation insertion
+        idx = random.randint(0, len(words)-1)
+        neg_text = words[:idx] + [random.choice(negations)] + words[idx:]
+        synthetic.append(InputExample(texts=[text, " ".join(neg_text)], label=0.0))
+        
+        # 2. Word swap (subject/object style)
+        if len(words) > 5:
+            w1, w2 = random.sample(range(len(words)), 2)
+            swapped = words[:]
+            swapped[w1], swapped[w2] = swapped[w2], swapped[w1]
+            synthetic.append(InputExample(texts=[text, " ".join(swapped)], label=0.0))
+            
+    return synthetic
 
 def train_transformer_model():
     device_str = str(get_device())
     print(f"Using device: {device_str}")
     
     # Load Sentence-BERT
-    # all-mpnet-base-v2 is the best base model for fine-grained semantic analysis.
     model = SentenceTransformer('all-mpnet-base-v2', device=device_str)
 
-    print("Loading Quora Question Pairs dataset...")
-    dataset = load_dataset("glue", "qqp", split="train[:50000]")
-
     train_examples = []
-    
-    # 1. Add Hard Negative Data Augmentations explicitly
-    hard_cases = [
-        # Small negations
-        ("I love going to the beach.", "I don't love going to the beach.", 0.0),
-        ("He is always very helpful and kind.", "He is never very helpful or kind.", 0.0),
-        ("The new restaurant is incredibly good.", "The new restaurant is incredibly bad.", 0.0),
-        ("Make sure to always wear a seatbelt.", "Make sure to never wear a seatbelt.", 0.0),
-        ("She passed the exam easily.", "She barely passed the exam.", 0.0),
-        
-        # Swapped Subjects/Objects
-        ("The dog chased the cat.", "The cat chased the dog.", 0.0),
-        ("A man is playing a guitar.", "A guitar is playing a man.", 0.0),
-        
-        # Hard Positives
-        ("Can I get a glass of water?", "Could you bring me some water?", 1.0),
-        ("I have exactly $100.", "I have about $100.", 1.0)
-    ]
-    # Inject multiple times to give the augmentations more weight against the 400k QQP rows
-    print("Injecting hard negative synthetic examples...")
-    for _ in range(250):
-        for s1, s2, label in hard_cases:
-            train_examples.append(InputExample(texts=[s1, s2], label=label))
 
-    for row in dataset:
-        # QQP labels: 0 = not paraphrase, 1 = paraphrase
+    # 1. Load QQP (General Paraphrase)
+    print("Loading QQP dataset...")
+    qqp = load_dataset("glue", "qqp", split="train[:30000]")
+    for row in qqp:
         train_examples.append(InputExample(texts=[row['question1'], row['question2']], label=float(row['label'])))
 
-    # Define DataLoader - INCREASE batch size to 32 for better OnlineContrastiveLoss mining
-    # Note: Reverted batch size to 16 because batch_size 32 caused an MPS Out-of-Memory error after an hour of training on MPNet.
+    # 2. Load PAWS (Word-swap adversaries)
+    print("Loading PAWS dataset...")
+    try:
+        paws = load_dataset("paws", "labeled_final", split="train[:10000]")
+        for row in paws:
+            train_examples.append(InputExample(texts=[row['sentence1'], row['sentence2']], label=float(row['label'])))
+    except Exception as e:
+        print(f"Skipping PAWS: {e}")
+
+    # 3. Load MNLI (Negation/Contradiction logic)
+    print("Loading MNLI dataset...")
+    try:
+        mnli = load_dataset("multi_nli", split="train[:10000]")
+        for row in mnli:
+            # 0: entailment (pos), 2: contradiction (neg)
+            if row['label'] == 0:
+                train_examples.append(InputExample(texts=[row['premise'], row['hypothesis']], label=1.0))
+            elif row['label'] == 2:
+                train_examples.append(InputExample(texts=[row['premise'], row['hypothesis']], label=0.0))
+    except Exception as e:
+        print(f"Skipping MNLI: {e}")
+
+    # 4. Add Synthetic Negatives
+    print("Generating diverse synthetic negatives...")
+    all_texts = [row['question1'] for row in qqp] + [row['question2'] for row in qqp]
+    train_examples.extend(generate_synthetic_negatives(all_texts, count=2000))
+
+    # Define DataLoader
     train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=16)
 
-    # Define Loss function
-    # ContrastiveLoss handles both positive and negative pairs effectively.
-    # Note: We replaced OnlineContrastiveLoss with ContrastiveLoss because MPS (Apple Silicon) crashes with empty tensor assertions during online mining.
-    print("Using ContrastiveLoss for hard-negative handling.")
+    # Use ContrastiveLoss
     train_loss = losses.ContrastiveLoss(model=model)
 
-    print("Starting training with advanced configuration...")
-    # Fine-tune the model
+    print(f"Starting training on {len(train_examples)} examples...")
     model.fit(
         train_objectives=[(train_dataloader, train_loss)],
         epochs=1,
-        warmup_steps=100,
+        warmup_steps=500,
         weight_decay=0.01,
         show_progress_bar=True
     )
     
     # Save the model
-    output_path = os.path.join(os.path.dirname(__file__), 'saved_model')
-    print(f"Saving highly fine-tuned MPNet model to {output_path}...")
+    output_path = os.path.join(os.path.dirname(__file__), 'saved_model_mpnet')
+    print(f"Saving improved model to {output_path}...")
     model.save(output_path)
-    print("Transformer fine-tuning verified and completed.")
+    print("Training completed.")
 
 if __name__ == "__main__":
     train_transformer_model()

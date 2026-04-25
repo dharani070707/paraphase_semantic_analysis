@@ -5,40 +5,40 @@ tags:
 - feature-extraction
 - dense
 - generated_from_trainer
-- dataset_size:52250
+- dataset_size:50926
 - loss:ContrastiveLoss
 base_model: sentence-transformers/all-mpnet-base-v2
 widget:
-- source_sentence: How important is money to you?
+- source_sentence: What is the difference between the girl you date and the woman
+    you marry?
   sentences:
-  - What are the best was to lose weight?
-  - Why is money important to you?
-  - How can I revise the whole mechanical engineering syllabus in 2 months for the
-    GATE 2015?
-- source_sentence: Why would anyone want a Red Panda as a pet?
+  - What is the rudest thing you have ever done?
+  - He became professor of general and analytical chemistry in 1891 and professor
+    of inorganic chemistry in 1903 .
+  - 'Dating and Relationships: Shall I marry a girl who is 10 years younger than me?'
+- source_sentence: And big , round eyes , so dark brown they almost look black ``
+    .
   sentences:
-  - Can you keep a Red Panda as a pet?
-  - What are the best aspects of working at Realty Income?
-  - How will you/what is the best way to console someone if he expresses his mourning
-    that he has not a single piece of land in this planet?
-- source_sentence: How can I reverse the effects of masturbation?
+  - And dark brown eyes , so black that they look almost big and round .
+  - Is it normal to pronounce words differently than the people around me?
+  - How do I ask a girl out for a sexual date?
+- source_sentence: He was nearly 50 when Lewinsky was 21.
   sentences:
-  - Why is mobile data so much more expensive than wired data?
-  - What are the side effects (positive and negative), if any, of masturbation?
-  - Which music do you like best?
-- source_sentence: 'How do I overcome my fear of writing, because of rejection? '
+  - He was almost 30 years older than Lewinsky.
+  - 'We did a good job serving America during the 2000 fiscal year. '
+  - What are the best ways to train a non-sales person in an online sales support?
+- source_sentence: How can I become a lawyer in the US?
   sentences:
-  - How can I overcome my fear of rejection?
-  - What would be your advice for a fresher joining the corporate world?
-  - Can I meditate to get supernatural powers?
-- source_sentence: Can the intelligence of a certain human being be measured in a
-    Lab using modern technology (MRI combined with other tests for example) and our
-    current knowledge of the human brain?
+  - How can I become a Lawyer in the United States?
+  - Do animals have emotions and feelings?
+  - He began his cross country and track career at Boston English High School and
+    continued his career at Boston State College .
+- source_sentence: How similar is French and Spanish compared to English?
   sentences:
-  - What trivia (and/or little-known facts) do you find interesting about United States
-    of America?
-  - How can I improve my English language from intermediate level?
-  - How can we use 100% of our brain?
+  - How similar is French and Spanish compared hardly  to English?
+  - What universities does Amazon recruit new grads from? What majors are they looking
+    for?
+  - What is production?
 pipeline_tag: sentence-similarity
 library_name: sentence-transformers
 ---
@@ -93,9 +93,9 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("sentence_transformers_model_id")
 # Run inference
 sentences = [
-    'Can the intelligence of a certain human being be measured in a Lab using modern technology (MRI combined with other tests for example) and our current knowledge of the human brain?',
-    'How can we use 100% of our brain?',
-    'What trivia (and/or little-known facts) do you find interesting about United States of America?',
+    'How similar is French and Spanish compared to English?',
+    'How similar is French and Spanish compared hardly  to English?',
+    'What is production?',
 ]
 embeddings = model.encode(sentences)
 print(embeddings.shape)
@@ -104,9 +104,9 @@ print(embeddings.shape)
 # Get the similarity scores for the embeddings
 similarities = model.similarity(embeddings, embeddings)
 print(similarities)
-# tensor([[1.0000, 0.3762, 0.0272],
-#         [0.3762, 1.0000, 0.0590],
-#         [0.0272, 0.0590, 1.0000]])
+# tensor([[1.0000, 0.2640, 0.0295],
+#         [0.2640, 1.0000, 0.0266],
+#         [0.0295, 0.0266, 1.0000]])
 ```
 
 <!--
@@ -151,19 +151,19 @@ You can finetune this model on your own dataset.
 
 #### Unnamed Dataset
 
-* Size: 52,250 training samples
+* Size: 50,926 training samples
 * Columns: <code>sentence_0</code>, <code>sentence_1</code>, and <code>label</code>
 * Approximate statistics based on the first 1000 samples:
   |         | sentence_0                                                                        | sentence_1                                                                        | label                                                          |
   |:--------|:----------------------------------------------------------------------------------|:----------------------------------------------------------------------------------|:---------------------------------------------------------------|
   | type    | string                                                                            | string                                                                            | float                                                          |
-  | details | <ul><li>min: 6 tokens</li><li>mean: 15.49 tokens</li><li>max: 77 tokens</li></ul> | <ul><li>min: 6 tokens</li><li>mean: 15.82 tokens</li><li>max: 77 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.37</li><li>max: 1.0</li></ul> |
+  | details | <ul><li>min: 4 tokens</li><li>mean: 18.95 tokens</li><li>max: 83 tokens</li></ul> | <ul><li>min: 5 tokens</li><li>mean: 17.86 tokens</li><li>max: 79 tokens</li></ul> | <ul><li>min: 0.0</li><li>mean: 0.37</li><li>max: 1.0</li></ul> |
 * Samples:
-  | sentence_0                                                            | sentence_1                                                   | label            |
-  |:----------------------------------------------------------------------|:-------------------------------------------------------------|:-----------------|
-  | <code>What is a carcinogen?</code>                                    | <code>Why is benzene a carcinogen?</code>                    | <code>0.0</code> |
-  | <code>The dog chased the cat.</code>                                  | <code>The cat chased the dog.</code>                         | <code>0.0</code> |
-  | <code>Why do I get headaches after eating sweets or oily food?</code> | <code>Why do I get a headache after drinking alcohol?</code> | <code>0.0</code> |
+  | sentence_0                                                                                                                                                                                   | sentence_1                                                                                                      | label            |
+  |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|:-----------------|
+  | <code>"When a new president is being sworn in (for example, he is Muslim in a 50/50 Christian/Muslim nation), does he put his hand on the Bible or Koran and say ""so help me God""?"</code> | <code>What if a Christian saves a Muslim, and dies saving his or her life. Will he go to Heaven or Hell?</code> | <code>0.0</code> |
+  | <code>Is it normal that, after a few hours of mastrubation, my erect penis become more engorged and slightly soft to the touch?</code>                                                       | <code>Why does the penis become sore after orgasm?</code>                                                       | <code>0.0</code> |
+  | <code>But how they did it gets my goat."</code>                                                                                                                                              | <code>The fact that they knew how to do it baffles me. </code>                                                  | <code>1.0</code> |
 * Loss: [<code>ContrastiveLoss</code>](https://sbert.net/docs/package_reference/sentence_transformer/losses.html#contrastiveloss) with these parameters:
   ```json
   {
@@ -287,12 +287,12 @@ You can finetune this model on your own dataset.
 ### Training Logs
 | Epoch  | Step | Training Loss |
 |:------:|:----:|:-------------:|
-| 0.1531 | 500  | 0.0138        |
-| 0.3062 | 1000 | 0.0121        |
-| 0.4593 | 1500 | 0.0120        |
-| 0.6124 | 2000 | 0.0114        |
-| 0.7655 | 2500 | 0.0113        |
-| 0.9186 | 3000 | 0.0113        |
+| 0.1571 | 500  | 0.0238        |
+| 0.3142 | 1000 | 0.0182        |
+| 0.4713 | 1500 | 0.0165        |
+| 0.6283 | 2000 | 0.0154        |
+| 0.7854 | 2500 | 0.0150        |
+| 0.9425 | 3000 | 0.0142        |
 
 
 ### Framework Versions

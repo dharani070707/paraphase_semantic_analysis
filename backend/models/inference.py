@@ -1,56 +1,69 @@
 import os
-from sentence_transformers import SentenceTransformer, util
+from sentence_transformers import SentenceTransformer, CrossEncoder, util
 from models.device import get_device
 
-_model = None
+_bi_model = None
+_cross_model = None
 
 def initialize_models(model_type='mpnet'):
     """
-    Loads the machine learning models into memory lazily.
-    Checks for locally fine-tuned models (mpnet or minilm) first, then falls back to base model.
+    Loads both the Bi-Encoder (for speed) and Cross-Encoder (for precision).
     """
-    global _model
-    if _model is None:
+    global _bi_model, _cross_model
+    device_str = str(get_device())
+    
+    if _bi_model is None:
         try:
-            device_str = str(get_device())
-            print(f"Loading transformer model ({model_type}) to {device_str}...")
-            
-            # Use pre-trained all-mpnet-base-v2 as a highly capable baseline
-            model_name_or_path = "all-mpnet-base-v2"
-            
-            # Check for specific saved model directories
+            print(f"Loading Bi-Encoder ({model_type}) to {device_str}...")
             base_path = os.path.dirname(__file__)
             mpnet_path = os.path.join(base_path, 'saved_model_mpnet')
             minilm_path = os.path.join(base_path, 'saved_model_minilm')
             
+            model_name_or_path = "all-mpnet-base-v2"
             if model_type == 'mpnet' and os.path.isdir(mpnet_path):
-                print(f"Found fine-tuned MPNet model at {mpnet_path}, loading it...")
                 model_name_or_path = mpnet_path
             elif model_type == 'minilm' and os.path.isdir(minilm_path):
-                print(f"Found fine-tuned MiniLM model at {minilm_path}, loading it...")
                 model_name_or_path = minilm_path
-            elif os.path.isdir(os.path.join(base_path, 'saved_model')): # Backward compatibility
+            elif os.path.isdir(os.path.join(base_path, 'saved_model')):
                 model_name_or_path = os.path.join(base_path, 'saved_model')
                 
-            _model = SentenceTransformer(model_name_or_path, device=device_str)
-            print("Model loaded successfully.")
+            _bi_model = SentenceTransformer(model_name_or_path, device=device_str)
+            print("Bi-Encoder loaded.")
         except Exception as e:
-            print(f"Failed to load model: {e}")
+            print(f"Failed to load Bi-Encoder: {e}")
+
+    if _cross_model is None:
+        try:
+            print(f"Loading Cross-Encoder (Quora) to {device_str}...")
+            _cross_model = CrossEncoder('cross-encoder/quora-distilroberta-base', device=device_str)
+            print("Cross-Encoder loaded.")
+        except Exception as e:
+            print(f"Failed to load Cross-Encoder: {e}")
 
 def predict_similarity(text1: str, text2: str) -> tuple[float, bool]:
     """
-    Given two strings, returns a tuple of (similarity_score, is_paraphrase).
+    Hybrid approach:
+    1. Quick check with Bi-Encoder.
+    2. If similarity is high (>0.80), verify with Cross-Encoder to catch traps.
     """
-    if _model is None:
+    if _bi_model is None or _cross_model is None:
         initialize_models()
         
-    embeddings1 = _model.encode(text1, convert_to_tensor=True)
-    embeddings2 = _model.encode(text2, convert_to_tensor=True)
+    emb1 = _bi_model.encode(text1, convert_to_tensor=True)
+    emb2 = _bi_model.encode(text2, convert_to_tensor=True)
+    bi_score = util.cos_sim(emb1, emb2).item()
     
-    cosine_score = util.cos_sim(embeddings1, embeddings2).item()
+    # Optimized thresholds for better general performance
+    if bi_score > 0.65:
+        cross_score = _cross_model.predict([text1, text2])
+        print(f"DEBUG: Bi-Score: {bi_score:.4f}, Cross-Score: {cross_score:.4f}")
+        
+        # Heuristic for cross-encoders
+        # Tuned to 0.30 as a safe middle ground for production
+        is_paraphrase = (bi_score > 0.65) and (cross_score > 0.30)
+        final_score = bi_score if is_paraphrase else min(bi_score, 0.4)
+    else:
+        is_paraphrase = bi_score >= 0.65
+        final_score = bi_score
     
-    # We use MiniLM out of the box because it is highly optimized for semantic similarity.
-    # Simple thresholding logic: If score > 0.75, it's considered a paraphrase.
-    is_paraphrase = cosine_score > 0.75
-    
-    return cosine_score, is_paraphrase
+    return final_score, is_paraphrase
