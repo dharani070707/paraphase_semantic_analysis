@@ -1,7 +1,7 @@
 import os
 import torch
 from datasets import load_dataset
-from models.inference import initialize_models, predict_similarity
+from inference.predict import initialize_models, predict_similarity
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 import numpy as np
 from tqdm import tqdm

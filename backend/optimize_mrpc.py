@@ -1,6 +1,6 @@
 import os
 from datasets import load_dataset
-from models import inference
+from inference import predict as inference
 from sentence_transformers import util
 import numpy as np
 from tqdm import tqdm
