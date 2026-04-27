@@ -93,6 +93,14 @@ EXAMPLES = [
         "text2": "The train departed from the station ahead of schedule.",
         "expected_paraphrase": False,
     },
+    {
+        "id": 11,
+        "label": "True Paraphrase",
+        "category": "Multi-sentence formal rewrite",
+        "text1": "Artificial intelligence is transforming many industries. It is being used in healthcare, finance, and transportation",
+        "text2": "AI is changing various sectors. It plays a role in areas like medicine, banking, and transport.",
+        "expected_paraphrase": True,
+    },
 ]
 
 # ── ANSI colours ──────────────────────────────────────────────────────────────
